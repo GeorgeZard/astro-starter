@@ -1,0 +1,73 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import TestComponent from '../components/react/TestComponent';
+---
+
+<DefaultLayout title="React Integration Test">
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold mb-8">React Integration Test</h1>
+    
+    <div class="space-y-8">
+      <section class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Client-side Hydration Test</h2>
+        <p class="mb-4">
+          This page demonstrates different hydration strategies for React components in Astro.
+          Each example uses the same component but with different client directives.
+        </p>
+      </section>
+
+      <section class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">client:load</h3>
+          <p class="mb-2 text-gray-600">Hydrates as soon as the page loads</p>
+          <TestComponent client:load title="client:load Example" />
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold mb-2">client:visible</h3>
+          <p class="mb-2 text-gray-600">Hydrates when the component is visible in the viewport</p>
+          <TestComponent client:visible title="client:visible Example" initialCount={5} />
+        </div>
+      </section>
+
+      <section class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">client:idle</h3>
+          <p class="mb-2 text-gray-600">Hydrates when the browser is idle</p>
+          <TestComponent client:idle title="client:idle Example" initialCount={10} />
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold mb-2">No Hydration</h3>
+          <p class="mb-2 text-gray-600">Static version with no hydration (buttons won't work)</p>
+          <div class="p-4 bg-blue-100 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Static (No Hydration)</h2>
+            <p class="mb-2">
+              This is a React component rendered in Astro without client-side hydration.
+            </p>
+            <div class="flex items-center gap-4">
+              <button
+                class="px-4 py-2 bg-blue-500 text-white rounded opacity-50 cursor-not-allowed"
+              >
+                Count: 0
+              </button>
+              <button
+                class="px-4 py-2 bg-gray-300 rounded opacity-50 cursor-not-allowed"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-2">Integration Status</h2>
+        <p>
+          If the buttons in the examples above work (except for the "No Hydration" example), 
+          it means the React integration is working correctly!
+        </p>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>

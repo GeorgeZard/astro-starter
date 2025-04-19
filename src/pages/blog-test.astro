@@ -1,0 +1,113 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import { Blog } from '../components/react';
+
+// Sample blog posts data with different categories for testing
+const samplePosts = [
+  {
+    id: 1,
+    title: "Understanding Astro Islands Architecture",
+    excerpt: "Learn how Astro's Islands Architecture enables high-performance websites with optional JavaScript hydration for interactive components.",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2070&auto=format&fit=crop",
+    date: "April 15, 2025",
+    category: "Tutorials",
+    slug: "understanding-astro-islands"
+  },
+  {
+    id: 2,
+    title: "Building Accessible Web Applications",
+    excerpt: "Discover best practices for creating web applications that are accessible to all users, including those with disabilities.",
+    image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2071&auto=format&fit=crop",
+    date: "April 10, 2025",
+    category: "Accessibility",
+    slug: "building-accessible-web-applications"
+  },
+  {
+    id: 3,
+    title: "Getting Started with TypeScript in Astro",
+    excerpt: "A comprehensive guide to implementing TypeScript in your Astro projects for better type safety and developer experience.",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
+    date: "April 5, 2025",
+    category: "TypeScript",
+    slug: "getting-started-with-typescript-in-astro"
+  },
+  {
+    id: 4,
+    title: "Optimizing Images in Astro Projects",
+    excerpt: "Learn how to implement effective image optimization techniques to improve performance and user experience in Astro websites.",
+    image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop",
+    date: "March 25, 2025",
+    category: "Performance",
+    slug: "optimizing-images-in-astro-projects"
+  },
+  {
+    id: 5,
+    title: "Creating Dynamic Routes in Astro",
+    excerpt: "A step-by-step guide to implementing dynamic routing in Astro for more flexible and powerful web applications.",
+    image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=2070&auto=format&fit=crop",
+    date: "March 20, 2025",
+    category: "Tutorials",
+    slug: "creating-dynamic-routes-in-astro"
+  },
+  {
+    id: 6,
+    title: "Integrating a Headless CMS with Astro",
+    excerpt: "Explore different approaches to connecting your Astro site with popular headless CMS platforms for content management.",
+    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=2070&auto=format&fit=crop",
+    date: "March 15, 2025",
+    category: "CMS",
+    slug: "integrating-headless-cms-with-astro"
+  }
+];
+---
+
+<DefaultLayout title="Blog Component Test">
+  <main>
+    <div class="bg-white border-b py-8">
+      <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-4">Blog Component Test</h1>
+        <p class="text-xl text-gray-600">
+          This page demonstrates the Blog React component with category filtering functionality.
+        </p>
+      </div>
+    </div>
+
+    <section class="container mx-auto py-8 px-4">
+      <div class="p-6 bg-white rounded-lg shadow-md mb-8">
+        <h2 class="text-2xl font-bold mb-4">Component Demo</h2>
+        <p class="mb-4">
+          The Blog component below is rendered with the <code>client:visible</code> hydration strategy,
+          which means it will be hydrated when it becomes visible in the viewport. 
+          This component features:
+        </p>
+        <ul class="list-disc pl-6 mb-4 space-y-2">
+          <li>Interactive category filtering</li>
+          <li>Responsive grid layout</li>
+          <li>Integration with the BlogPostCard component</li>
+          <li>Accessible UI controls</li>
+        </ul>
+        <p>
+          Try clicking on different category filters to see how the blog posts are filtered.
+        </p>
+      </div>
+
+      <!-- Blog component with client:visible directive as specified in the migration plan -->
+      <Blog client:visible posts={samplePosts} title="OUR BLOG" subtitle="LATEST ARTICLES" description="Explore our collection of articles, tutorials, and guides covering various aspects of web development with Astro and modern frontend technologies." />
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md mt-12">
+        <h2 class="text-2xl font-bold mb-2">Implementation Notes</h2>
+        <p class="mb-2">
+          This component has been migrated from the main-theme project to astro-starter according to the React component migration plan.
+          Key implementation details:
+        </p>
+        <ul class="list-disc pl-6 space-y-1">
+          <li>Uses the <code>client:visible</code> hydration strategy for optimal performance</li>
+          <li>Properly integrates with the previously migrated BlogPostCard component</li>
+          <li>Implements TypeScript interfaces for type safety</li>
+          <li>Includes accessibility features like ARIA attributes and keyboard navigation</li>
+          <li>Maintains the original styling and visual design from the main-theme</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</DefaultLayout>

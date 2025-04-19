@@ -1,0 +1,120 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import { BlogPost } from '../components/react';
+
+// Sample blog post data for testing with HTML content
+const sampleBlogPost = {
+  title: "Summer Solstice Celebration at Bayamo",
+  image: "https://images.unsplash.com/photo-1532452119098-a3650b3c46d3?ixlib=rb-4.0.3",
+  date: "June 18, 2023",
+  category: "Events",
+  author: "Maria Papadopoulos",
+  tags: ["Events", "Summer", "Celebration"],
+  content: `
+    <p>Each year as the summer solstice approaches, Bayamo Beach Bar transforms into a magical celebration of the season's longest day. This annual tradition has become one of our most anticipated events, drawing visitors from across Mani and beyond.</p>
+    <h2>A Celebration of Summer</h2>
+    <p>The Summer Solstice celebration at Bayamo is more than just a party—it's a tribute to the Mediterranean summer that defines our identity. As the sun lingers longer in the sky, we honor this natural phenomenon with an experience designed to engage all the senses.</p>
+    <p>This year's celebration featured a carefully curated selection of our signature cocktails, including the popular Mediterranean Sunset and our special Solstice Spritz, created specifically for the occasion. Our culinary team prepared a menu of locally-sourced delicacies that perfectly complemented the evening's festivities.</p>
+    <h2>Music and Atmosphere</h2>
+    <p>As twilight descended, the atmosphere was enhanced by the soulful melodies of local musician Nikos Dimitriou, whose acoustic performance provided the perfect soundtrack to the sunset. Later in the evening, DJ Elena took over, transforming the beach into an energetic dance floor under the stars.</p>
+    <blockquote>"The Summer Solstice at Bayamo captures everything I love about Greek summer nights—the music, the sea breeze, the incredible cocktails, and the feeling that the night might never end." — Andreas K., guest</blockquote>
+    <h2>Looking Forward</h2>
+    <p>If you missed this year's Summer Solstice celebration, don't worry—our calendar is filled with special events throughout the season. From full moon parties to themed cocktail nights, there's always something happening at Bayamo.</p>
+    <p>For those planning a special celebration of their own, remember that Bayamo offers custom event packages for birthdays, business gatherings, and wedding celebrations. Our team can help you create your own unforgettable summer experience.</p>
+  `,
+  relatedPosts: [{
+    id: 2,
+    title: "Signature Cocktail Series: Mediterranean Sunset",
+    image: "https://images.unsplash.com/photo-1536935338788-846bb9981813?ixlib=rb-4.0.3",
+    slug: "signature-cocktail-mediterranean-sunset"
+  }, {
+    id: 3,
+    title: "A Perfect Day at Bayamo Beach Bar",
+    image: "https://images.unsplash.com/photo-1520263115673-610416f52ab6?ixlib=rb-4.0.3",
+    slug: "perfect-day-at-bayamo"
+  }]
+};
+
+// Sample blog post without related posts
+const sampleBlogPost2 = {
+  title: "Mastering Astro's Islands Architecture",
+  image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2070&auto=format&fit=crop",
+  date: "April 15, 2025",
+  category: "Tutorials",
+  author: "Alex Johnson",
+  tags: ["Astro", "Web Development", "Performance"],
+  content: `
+    <p>Astro's Islands Architecture is revolutionizing how we build websites by allowing us to create highly performant sites with selective hydration. This tutorial explores the ins and outs of this innovative approach.</p>
+    <h2>Understanding Islands Architecture</h2>
+    <p>Traditional Single-Page Applications (SPAs) ship the entire JavaScript framework to the browser, regardless of how much interactivity your page actually needs. This can result in slower page loads and poor performance metrics.</p>
+    <p>Astro's approach is different. It only sends the JavaScript that's actually needed to the browser, resulting in faster page loads and better performance metrics.</p>
+    <pre><code>// Example: A simple Astro component with React island
+---
+import ReactCounter from '../components/ReactCounter';
+---
+
+&lt;div class="static-content"&gt;
+  &lt;h1&gt;Welcome to my site!&lt;/h1&gt;
+  &lt;p&gt;This content is static HTML with no JavaScript.&lt;/p&gt;
+  
+  &lt;!-- Only this counter component will be hydrated with JavaScript --&gt;
+  &lt;ReactCounter client:load /&gt;
+&lt;/div&gt;
+</code></pre>
+    <h2>Client Directives</h2>
+    <p>Astro provides several client directives to control when and how your components hydrate:</p>
+    <ul>
+      <li><strong>client:load</strong> - Hydrate as soon as the page loads</li>
+      <li><strong>client:visible</strong> - Hydrate when the component is visible in viewport</li>
+      <li><strong>client:idle</strong> - Hydrate when the browser is idle</li>
+      <li><strong>client:media</strong> - Hydrate when a CSS media query is matched</li>
+    </ul>
+    <p>By using these directives strategically, you can prioritize which components get hydrated first, improving the perceived performance of your site.</p>
+    <blockquote>"Astro's Islands Architecture gave us a 30% boost in our Core Web Vitals scores by dramatically reducing our JavaScript payload." — Web Performance Team</blockquote>
+  `
+};
+---
+
+<DefaultLayout title="BlogPost Component Test">
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold mb-8">BlogPost Component Test</h1>
+    
+    <div class="space-y-12">
+      <section class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Component Demo</h2>
+        <p class="mb-4">
+          This page demonstrates the BlogPost React component using the client:load hydration strategy.
+          The component displays a full blog post with HTML content, metadata, tags, and related posts.
+        </p>
+        <p class="mb-4">
+          The client:load strategy ensures the component is hydrated immediately when the page loads,
+          which is appropriate for content that is important for SEO and initial page visibility.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Example 1: Complete Blog Post with Related Posts</h2>
+        <BlogPost client:load post={sampleBlogPost} />
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Example 2: Technical Blog Post with Code Snippets</h2>
+        <BlogPost client:load post={sampleBlogPost2} />
+      </section>
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-2">Implementation Notes</h2>
+        <p class="mb-4">
+          This component has been migrated from the main-theme project to astro-starter.
+          It uses Tailwind CSS for styling, the lucide-react package for icons, and React's
+          dangerouslySetInnerHTML to render HTML content from the CMS.
+        </p>
+        <p>
+          The component handles various content types including text, headings, blockquotes,
+          and code snippets. It also conditionally renders tags and related posts sections
+          if that data is available.
+        </p>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>

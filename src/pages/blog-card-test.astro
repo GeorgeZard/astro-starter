@@ -1,0 +1,63 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import { BlogPostCard } from '../components/react';
+
+// Sample blog post data for testing
+const samplePost = {
+  title: "Understanding Astro Islands Architecture",
+  slug: "understanding-astro-islands",
+  date: "April 15, 2025",
+  category: "TUTORIALS",
+  excerpt: "Learn how Astro's Islands Architecture enables high-performance websites with optional JavaScript hydration for interactive components.",
+  image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2070&auto=format&fit=crop"
+};
+
+const samplePost2 = {
+  title: "Building Accessible Web Applications",
+  slug: "building-accessible-web-applications",
+  date: "April 10, 2025",
+  category: "ACCESSIBILITY",
+  excerpt: "Discover best practices for creating web applications that are accessible to all users, including those with disabilities.",
+  image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2071&auto=format&fit=crop"
+};
+---
+
+<DefaultLayout title="BlogPostCard Component Test">
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold mb-8">BlogPostCard Component Test</h1>
+    
+    <div class="space-y-8">
+      <section class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Component Demo</h2>
+        <p class="mb-4">
+          This page demonstrates the BlogPostCard React component with different hydration strategies.
+          The component displays a preview of a blog post with an image, category, date, title, excerpt, and a "Read More" link.
+        </p>
+      </section>
+
+      <section class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-xl font-semibold mb-2">client:visible</h3>
+          <p class="mb-2 text-gray-600">Hydrates when the component is visible in the viewport</p>
+          <BlogPostCard client:visible post={samplePost} />
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold mb-2">client:load</h3>
+          <p class="mb-2 text-gray-600">Hydrates as soon as the page loads</p>
+          <BlogPostCard client:load post={samplePost2} />
+        </div>
+      </section>
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-2">Implementation Notes</h2>
+        <p>
+          This component has been migrated from the main-theme project to astro-starter.
+          It uses Tailwind CSS for styling and the lucide-react package for icons.
+          The component is designed to be used in blog listing pages and works with the 
+          filtering functionality in the Blog component.
+        </p>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>
