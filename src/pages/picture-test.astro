@@ -1,0 +1,360 @@
+---
+/**
+ * Picture Component Test Page
+ * 
+ * This page demonstrates the capabilities of the enhanced Picture.astro component
+ * with various types of images (local and external) and different layout modes.
+ */
+
+import Picture from '../components/media/Picture.astro';
+
+// Local image import (if we have sample images in the project)
+// If these imports fail due to missing files, the component will fall back to 
+// external images as specified in the catch blocks
+
+let localImageImported;
+try {
+  localImageImported = (await import('../assets/img/about-us.jpeg')).default;
+} catch (e) {
+  console.warn("Local image 'about-us.jpeg' not found, using external fallback");
+}
+
+// Sample external images for testing
+const externalImageUrl = "https://images.unsplash.com/photo-1506929562872-bb421503ef21";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Picture Component Test</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      
+      h1, h2, h3 {
+        color: #444;
+      }
+      
+      section {
+        margin-bottom: 3rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 2rem;
+      }
+      
+      .test-area {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border-radius: 0.5rem;
+      }
+      
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .code {
+        background-color: #f1f1f1;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Picture Component Test Page</h1>
+    <p>This page demonstrates the capabilities of the enhanced Picture.astro component with various configurations.</p>
+
+    <section>
+      <h2>1. Layout Modes</h2>
+      
+      <h3>Constrained Layout (Default)</h3>
+      <div class="code">
+        &lt;Picture 
+          src={externalImageUrl}
+          alt="Constrained layout example"
+          width={600}
+          height={400}
+          layout="constrained"
+        /&gt;
+      </div>
+      <div class="test-area">
+        <Picture 
+          src={externalImageUrl}
+          alt="Constrained layout example"
+          width={600}
+          height={400}
+          layout="constrained"
+        />
+      </div>
+      
+      <h3>Full Width Layout</h3>
+      <div class="code">
+        &lt;Picture 
+          src={externalImageUrl}
+          alt="Full width layout example"
+          width={1200}
+          height={600}
+          layout="fullWidth"
+        /&gt;
+      </div>
+      <div class="test-area">
+        <Picture 
+          src={externalImageUrl}
+          alt="Full width layout example"
+          width={1200}
+          height={600}
+          layout="fullWidth"
+        />
+      </div>
+      
+      <h3>Fixed Layout</h3>
+      <div class="code">
+        &lt;Picture 
+          src={externalImageUrl}
+          alt="Fixed layout example"
+          width={300}
+          height={200}
+          layout="fixed"
+        /&gt;
+      </div>
+      <div class="test-area">
+        <Picture 
+          src={externalImageUrl}
+          alt="Fixed layout example"
+          width={300}
+          height={200}
+          layout="fixed"
+        />
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Image Source Types</h2>
+      
+      <div class="grid">
+        <div>
+          <h3>External URL</h3>
+          <div class="code">
+            &lt;Picture 
+              src="https://images.unsplash.com/photo-1506929562872-bb421503ef21"
+              alt="External image example"
+              width={400}
+              height={300}
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src="https://images.unsplash.com/photo-1506929562872-bb421503ef21"
+              alt="External image example"
+              width={400}
+              height={300}
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Local Image Path</h3>
+          <div class="code">
+            &lt;Picture 
+              src="/img/about-us.jpeg"
+              alt="Local path example"
+              width={400}
+              height={300}
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src="/img/about-us.jpeg"
+              alt="Local path example"
+              width={400}
+              height={300}
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Imported Image</h3>
+          <div class="code">
+            &lt;Picture 
+              src={localImageImported}
+              alt="Imported image example"
+              width={400}
+              height={300}
+            /&gt;
+          </div>
+          <div class="test-area">
+            {localImageImported && (
+              <Picture 
+                src={localImageImported}
+                alt="Imported image example"
+                width={400}
+                height={300}
+              />
+            )}
+            {!localImageImported && (
+              <p>Imported image not available, please add a sample image to src/assets/img/about-us.jpeg.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Advanced Options</h2>
+      
+      <div class="grid">
+        <div>
+          <h3>Using Aspect Ratio</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Aspect ratio example"
+              width={400}
+              aspect={16/9}
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src={externalImageUrl}
+              alt="Aspect ratio example"
+              width={400}
+              aspect={16/9}
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Custom Format (AVIF)</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Format example"
+              width={400}
+              height={300}
+              format="avif"
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src={externalImageUrl}
+              alt="Format example"
+              width={400}
+              height={300}
+              format="avif"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Custom Quality</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Quality example"
+              width={400}
+              height={300}
+              quality={90}
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src={externalImageUrl}
+              alt="Quality example"
+              width={400}
+              height={300}
+              quality={90}
+            />
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid" style="margin-top: 2rem;">
+        <div>
+          <h3>Object Fit: Cover (Default)</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Object-fit cover example"
+              width={400}
+              height={400}
+              fit="cover"
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src={externalImageUrl}
+              alt="Object-fit cover example"
+              width={400}
+              height={400}
+              fit="cover"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Object Fit: Contain</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Object-fit contain example"
+              width={400}
+              height={400}
+              fit="contain"
+              class="bg-gray-100"
+            /&gt;
+          </div>
+          <div class="test-area">
+            <Picture 
+              src={externalImageUrl}
+              alt="Object-fit contain example"
+              width={400}
+              height={400}
+              fit="contain"
+              class="bg-gray-100"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <h3>Custom CSS Class</h3>
+          <div class="code">
+            &lt;Picture 
+              src={externalImageUrl}
+              alt="Custom class example"
+              width={400}
+              height={300}
+              class="rounded-xl shadow-lg"
+            /&gt;
+          </div>
+          <div class="test-area">
+            <style>
+              .rounded-xl {
+                border-radius: 1rem;
+              }
+              .shadow-lg {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+              }
+            </style>
+            <Picture 
+              src={externalImageUrl}
+              alt="Custom class example"
+              width={400}
+              height={300}
+              class="rounded-xl shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

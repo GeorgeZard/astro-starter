@@ -1,0 +1,80 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Services from '../components/Services.astro';
+
+// Sample custom services data for testing
+const customServices: Array<{
+  title: string;
+  description: string;
+  icon: 'calendar' | 'briefcase' | 'heart';
+}> = [
+  {
+    title: 'BEACH WEDDINGS',
+    description: 'Say "I do" with the breathtaking Mediterranean as your backdrop.',
+    icon: 'heart'
+  },
+  {
+    title: 'CORPORATE RETREATS',
+    description: 'Team building and strategic planning in a relaxing beachside environment.',
+    icon: 'briefcase'
+  },
+  {
+    title: 'ANNIVERSARY CELEBRATIONS',
+    description: 'Commemorate your special milestones with a memorable event by the sea.',
+    icon: 'calendar'
+  }
+];
+---
+
+<DefaultLayout title="Services Component Test">
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold mb-8">Services Component Test</h1>
+    
+    <div class="space-y-16">
+      <section class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Component Demo</h2>
+        <p class="mb-4">
+          This page demonstrates the Services Astro component. The component displays a section with service offerings,
+          including a title, description, and visual elements. The component is designed to be customizable
+          with different services and content.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Default Configuration</h2>
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+          <p class="text-sm text-gray-700">The Services component with default properties:</p>
+        </div>
+        <Services />
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Custom Configuration</h2>
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+          <p class="text-sm text-gray-700">The Services component with custom properties:</p>
+        </div>
+        <Services 
+          title="EXCEPTIONAL\nEVENT SERVICES"
+          subtitle="OUR OFFERINGS"
+          description="Bayamo Beach Bar offers a range of premium event services tailored to your specific needs. Our experienced team ensures every detail is perfect for your special occasion."
+          ctaText="BOOK NOW"
+          ctaLink="#booking"
+          services={customServices}
+        />
+      </section>
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md mt-8">
+        <h2 class="text-2xl font-bold mb-2">Implementation Notes</h2>
+        <p>
+          This component has been migrated from a React component in the main-theme project to a native Astro component.
+          It uses Tailwind CSS for styling and imports Lucide icons for the service icons.
+          The component is fully customizable through props, allowing for different services, titles, and descriptions.
+        </p>
+        <p class="mt-4">
+          The component handles icon rendering by mapping icon names to their corresponding components,
+          and displays a numbered list of services with their descriptions.
+        </p>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>

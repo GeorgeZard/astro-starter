@@ -1,0 +1,97 @@
+---
+// Import icons from Lucide
+import { CalendarIcon, BriefcaseIcon, HeartIcon } from 'lucide-react';
+
+// Define props interface for customization
+interface Props {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  services?: Array<{
+    title: string;
+    description: string;
+    icon: 'calendar' | 'briefcase' | 'heart'; // Specify the exact icon names
+  }>;
+}
+
+// Default props for the component
+const {
+  title = "CURATED\nEXPERIENCES",
+  subtitle = "SERVICES",
+  description = "We offer a range of premium services to make your time at Bayamo Beach Bar truly special. From intimate gatherings to large celebrations, our team will ensure every detail is perfect.",
+  ctaText = "INQUIRE NOW",
+  ctaLink = "#contact",
+  services = [
+    {
+      title: 'BIRTHDAY PARTIES',
+      description: 'Celebrate your special day in style with our customized party packages.',
+      icon: 'calendar'
+    }, 
+    {
+      title: 'BUSINESS EVENTS',
+      description: 'Transform your corporate gatherings into memorable beachside experiences.',
+      icon: 'briefcase'
+    }, 
+    {
+      title: 'WEDDING PARTIES',
+      description: 'Create magical moments for your wedding celebration with our stunning beach backdrop.',
+      icon: 'heart'
+    }
+  ]
+} = Astro.props;
+
+// Map icon names to their component references
+const iconMap = {
+  'calendar': CalendarIcon,
+  'briefcase': BriefcaseIcon,
+  'heart': HeartIcon
+};
+---
+
+<section id="services" class="py-24 bg-[#f5f3ee]">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <div class="lg:col-span-4">
+        <h5 class="text-sm tracking-widest text-gray-500 mb-6">
+          {subtitle}
+        </h5>
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8">
+          {title.split('\n').map((line) => (
+            <>
+              {line}<br />
+            </>
+          ))}
+        </h2>
+        <div class="w-24 h-1 bg-blue-900 mb-8"></div>
+        <p class="text-lg text-gray-700 mb-8">
+          {description}
+        </p>
+        <a href={ctaLink} class="inline-block border-b-2 border-blue-900 text-gray-900 pb-1 text-sm tracking-widest hover:text-blue-900 transition-colors">
+          {ctaText}
+        </a>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {services.map((service, index) => {
+            return (
+              <div class="bg-white p-8">
+                <div class="mb-6 flex justify-between items-center">
+                  {service.icon === 'calendar' && <CalendarIcon client:load className="w-8 h-8 text-blue-900" />}
+                  {service.icon === 'briefcase' && <BriefcaseIcon client:load className="w-8 h-8 text-blue-900" />}
+                  {service.icon === 'heart' && <HeartIcon client:load className="w-8 h-8 text-blue-900" />}
+                  <span class="text-sm text-gray-400">0{index + 1}</span>
+                </div>
+                <h3 class="text-xl font-medium text-gray-900 mb-4">
+                  {service.title}
+                </h3>
+                <p class="text-gray-700">{service.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

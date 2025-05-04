@@ -1,0 +1,48 @@
+---
+title: "Hello World: First Blog Post"
+description: "This is a sample blog post to test the content collection schema"
+thumbnail: "/images/blog/hello-world.jpg"
+pubDate: "2025-04-29"
+tag: ["sample", "test"]
+style: {
+  template: "blog",
+  nav_color: "light",
+  content_class: "prose"
+}
+---
+
+# Hello World
+
+This is a sample blog post to test that the content collection schema is working correctly.
+
+## Features
+
+- Content collection schema validation
+- MDX support
+- Proper metadata handling
+
+The blog post schema includes support for titles, descriptions, thumbnails, publication dates, and tags.
+
+## Code Example
+
+```js
+// This is a sample code block
+function helloWorld() {
+  console.log("Hello, world!");
+}
+```
+
+## Blocks Support
+
+The schema also supports blocks for different types of content:
+
+```json
+{
+  "component": "TextMedia",
+  "title": "Text with Media Example",
+  "content": "This is an example of a text with media block",
+  "style": {
+    "surface": "primary",
+    "container": "sm"
+  }
+}

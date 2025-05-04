@@ -1,0 +1,225 @@
+---
+/**
+ * Enhanced Picture Component
+ * 
+ * This component provides a standardized way to handle both local images (processed by astro:assets)
+ * and external image URLs. It supports different layout modes and integrates with Astro's image optimization.
+ * 
+ * @example
+ * // Local image (from src/assets/img/)
+ * import myImage from '../assets/img/my-image.jpg';
+ * <Picture src={myImage} alt="My Image" width={800} height={600} layout="fullWidth" />
+ * 
+ * // External image URL
+ * <Picture src="https://example.com/image.jpg" alt="External Image" width={800} height={600} layout="constrained" />
+ * 
+ * @prop {string|ImageMetadata} src - Image source path or imported image
+ * @prop {string} alt - Alt text for accessibility (required)
+ * @prop {number} width - Desired image width
+ * @prop {number} height - Desired image height (calculated from aspect if provided)
+ * @prop {number} [aspect] - Aspect ratio (width/height) to calculate dimensions
+ * @prop {string} [layout="constrained"] - Layout mode (constrained, fullWidth, fixed)
+ * @prop {string} [loading="lazy"] - Image loading strategy (lazy, eager)
+ * @prop {string} [sizes="100vw"] - Size attribute for responsive images
+ * @prop {number[]} [widths] - Widths for responsive images
+ * @prop {string} [format="webp"] - Image format (webp, avif, jpeg, png)
+ * @prop {number} [quality=80] - Image quality (1-100)
+ * @prop {string} [class] - Additional CSS classes
+ */
+
+import { getImage } from "astro:assets";
+
+let {
+  src,
+  alt,
+  width = 800,
+  height,
+  aspect,
+  layout = "constrained", // constrained, fullWidth, fixed
+  loading = "lazy",
+  sizes = "100vw",
+  widths = [
+    240, 320, 480, 640, 750, 828, 1080, 1200, 1920, 2048,
+  ],
+  format = "webp",
+  quality = 80,
+  class: className = "",
+  fit = "cover", // cover, contain, fill
+} = Astro.props;
+
+// Calculate height based on aspect ratio if provided
+if (aspect && !height) {
+  height = Math.round(width / aspect);
+} else if (!height) {
+  height = width; // Default to square if neither height nor aspect provided
+}
+
+// Handles three possible image source types:
+// 1. ImageMetadata object (imported image)
+// 2. String path to local image in src/assets/
+// 3. External URL
+
+// Handle either string paths or imported images
+let imgSrc = src;
+let isExternal = false;
+
+// Check if it's an external URL
+if (typeof src === 'string' && (src.startsWith('http://') || src.startsWith('https://'))) {
+  isExternal = true;
+}
+// If it's a non-external string path, try to load from local assets
+else if (typeof src === 'string' && !isExternal) {
+  try {
+    // Import image assets
+    const allImages = import.meta.glob<{ default: ImageMetadata }>("/src/assets/**/*.{jpeg,jpg,png,gif,webp,avif}");
+    
+    // Normalize path
+    let normalizedPath;
+    if (src.startsWith('/src/assets/')) {
+      normalizedPath = src;
+    } else if (src.startsWith('/assets/')) {
+      normalizedPath = '/src' + src; 
+    } else if (src.startsWith('/')) {
+      normalizedPath = '/src/assets' + src;
+    } else {
+      normalizedPath = '/src/assets/' + src;
+    }
+    
+    // Try to load the image
+    if (allImages[normalizedPath]) {
+      const importedModule = await allImages[normalizedPath]();
+      imgSrc = importedModule.default;
+    } else {
+      console.warn(`Image not found in assets: ${normalizedPath}, will use as external path`);
+      // If it's not found in assets, just use the original string path
+      isExternal = true;
+    }
+  } catch (error) {
+    console.error('Error loading image:', error);
+    isExternal = true;
+    // Continue with the string src
+  }
+}
+
+// Process with Astro's image optimization if it's an ImageMetadata object
+let optimizedImg;
+// Define the type for sources
+interface ImageSource {
+  format: string;
+  srcset: string;
+  type: string;
+}
+
+let sources: ImageSource[] = [];
+
+// Only optimize if it's not an external image
+if (!isExternal) {
+  try {
+    // Base optimized image
+    optimizedImg = await getImage({
+      src: imgSrc,
+      width,
+      height,
+      format: format,
+      quality: quality,
+    });
+
+    // Create responsive versions and formats
+    const formats = [format]; // Default format
+    
+    // Add AVIF if format isn't already AVIF and it's not a GIF
+    if (format !== 'avif' && format !== 'gif') {
+      formats.push('avif');
+    }
+    
+    sources = await Promise.all(
+      formats.map(async (imgFormat) => {
+        const image = await getImage({
+          src: imgSrc,
+          format: imgFormat,
+          width,
+          height,
+          quality: imgFormat === 'avif' ? quality - 10 : quality, // AVIF can use lower quality
+          widths: layout === 'fixed' ? undefined : widths,
+          sizes: layout === 'fixed' ? undefined : sizes,
+        });
+        return {
+          format: imgFormat,
+          srcset: image.srcSet?.attribute || '',
+          type: `image/${imgFormat}`,
+        };
+      })
+    );
+  } catch (error) {
+    console.error('Error optimizing image:', error);
+    isExternal = true; // Fall back to external handling
+  }
+}
+
+// Apply layout-specific classes
+function imgClass() {
+  let classes = className ? className : '';
+  
+  switch (layout) {
+    case 'fullWidth':
+      classes += ' w-full h-auto';
+      break;
+    case 'fixed':
+      // No additional classes for fixed layout - uses exact dimensions
+      break;
+    case 'constrained':
+    default:
+      classes += ' max-w-full';
+      break;
+  }
+  
+  // Add object-fit class if specified
+  if (fit) {
+    classes += ` object-${fit}`;
+  }
+  
+  return classes.trim();
+}
+
+// Generate the appropriate dimensions based on layout
+const dimensions = layout === 'fixed' 
+  ? { width, height } 
+  : layout === 'fullWidth' 
+    ? { width: '100%', height: 'auto' } 
+    : { width: '100%', height: 'auto', style: `max-width: ${width}px;` };
+---
+
+<picture>
+  {!isExternal && sources.length > 0 && 
+    sources.map((source) => (
+      <source
+        type={source.type}
+        srcset={source.srcset}
+        sizes={layout === 'fixed' ? undefined : sizes}
+      />
+    ))}
+
+  {!isExternal && optimizedImg ? (
+    /* Local optimized image */
+    <img
+      src={optimizedImg.src}
+      width={dimensions.width}
+      height={dimensions.height}
+      style={dimensions.style}
+      alt={alt}
+      loading={loading}
+      class={imgClass()}
+    />
+  ) : (
+    /* Fallback for external URLs */
+    <img
+      src={src}
+      width={dimensions.width}
+      height={dimensions.height}
+      style={dimensions.style}
+      alt={alt}
+      loading={loading}
+      class={imgClass()}
+    />
+  )}
+</picture>

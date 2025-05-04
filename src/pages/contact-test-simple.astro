@@ -1,0 +1,26 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Contact from '../components/Contact.astro';
+
+// Custom contact data
+const customLocation = {
+  label: "Our Location",
+  value: "Selinitsa Beach, Gythio, Mani, Greece"
+};
+const customPhone = {
+  label: "Reservations",
+  value: "+30 456 789 0123"
+};
+const customEmail = {
+  label: "Email Us",
+  value: "info@bayamobeachbar.com"
+};
+---
+
+<DefaultLayout title="Contact Component Simple Test">
+  <Contact 
+    location={customLocation}
+    phone={customPhone}
+    email={customEmail}
+  />
+</DefaultLayout>

@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import AboutComponent from '../components/About.astro';
+
+// Get the about page content from the content collection
+const aboutPages = await getCollection('page', ({ id }) => {
+  return id.includes('about');
+});
+
+// Get the first about page (or use default values if none exists)
+const aboutPage = aboutPages.length > 0 ? aboutPages[0] : null;
+---
+
+<DefaultLayout title="About">
+  <main class="container mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold text-center mb-12">About Us</h1>
+    
+    {aboutPage ? (
+      <AboutComponent entry={aboutPage} />
+    ) : (
+      <AboutComponent />
+    )}
+    
+    <div class="mt-16">
+      <a href="/about-test" class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+        View Component Test Page
+      </a>
+    </div>
+  </main>
+</DefaultLayout>

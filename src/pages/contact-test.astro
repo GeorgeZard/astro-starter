@@ -1,0 +1,83 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Contact from '../components/Contact.astro';
+
+// Sample custom contact data for testing
+const customContactData = {
+  subtitle: "GET IN TOUCH",
+  title: "CONTACT\nBAYAMO BEACH",
+  location: {
+    label: "Our Address",
+    value: "Selinitsa Beach, Gythio, Mani, Greece"
+  },
+  phone: {
+    label: "Call Us",
+    value: "+30 456 789 0123"
+  },
+  email: {
+    label: "Send Email",
+    value: "reservations@bayamobeachbar.com"
+  },
+  openingHours: "Summer Season: 9:00 AM - 3:00 AM Daily",
+  mapPlaceholder: "Bayamo Beach Bar Location"
+};
+---
+
+<DefaultLayout title="Contact Component Test">
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold mb-8">Contact Component Test</h1>
+    
+    <div class="space-y-16">
+      <section class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Component Demo</h2>
+        <p class="mb-4">
+          This page demonstrates the Contact Astro component. The component displays a contact information section
+          with location, phone, email, and opening hours, alongside a map placeholder. The component is designed 
+          to be fully customizable through props.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Default Configuration</h2>
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+          <p class="text-sm text-gray-700">The Contact component with default properties:</p>
+        </div>
+        <Contact />
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Custom Configuration</h2>
+        <div class="bg-gray-100 p-4 rounded-lg mb-6">
+          <p class="text-sm text-gray-700">The Contact component with custom properties:</p>
+        </div>
+        <Contact
+          subtitle={customContactData.subtitle}
+          title={customContactData.title}
+          location={customContactData.location}
+          phone={customContactData.phone}
+          email={customContactData.email}
+          openingHours={customContactData.openingHours}
+          mapPlaceholder={customContactData.mapPlaceholder}
+        />
+      </section>
+
+      <div class="p-6 bg-green-100 rounded-lg shadow-md mt-8">
+        <h2 class="text-2xl font-bold mb-2">Implementation Notes</h2>
+        <p>
+          This component has been migrated from a React component in the main-theme project to a native Astro component.
+          It uses Tailwind CSS for styling and leverages the IconMap component for icons.
+        </p>
+        <p class="mt-4">
+          Key changes in the migration:
+          <ul class="list-disc ml-6 mt-2">
+            <li>Moved imports to the Astro frontmatter section</li>
+            <li>Used the IconMap component for mapping lucide-react icons to MDI icons</li>
+            <li>Made all content customizable through props with sensible defaults</li>
+            <li>Structured contact information into objects for better organization</li>
+            <li>Maintained visual parity with the original React component</li>
+          </ul>
+        </p>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>

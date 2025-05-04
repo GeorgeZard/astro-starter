@@ -1,0 +1,76 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Navigation from '../components/Navigation.astro';
+
+// This page demonstrates both navigation approaches
+---
+
+<DefaultLayout title="Navigation Test">
+  <main>
+    <h1 class="text-4xl font-bold mt-24 mb-12 text-center">Navigation Test Page</h1>
+    
+    <div class="max-w-4xl mx-auto mb-20">
+      <h2 class="text-2xl font-bold mb-4">Main-Theme Style Navigation (Standalone)</h2>
+      <p class="mb-8">This shows the direct port of the main-theme Navigation component:</p>
+      
+      <div class="border p-4 rounded-lg bg-gray-50 relative h-32 mb-12">
+        <!-- We're not actually rendering the navigation here, just showing what it looks like on other pages -->
+        <div class="text-center mt-12">Navigation appears at the top of the page</div>
+      </div>
+      
+      <h2 class="text-2xl font-bold mb-4">astro-starter Original Navigation (Header Component)</h2>
+      <p class="mb-8">This shows the original astro-starter navigation style when explicitly rendered:</p>
+      
+      <div class="border p-4 rounded-lg bg-gray-50">
+        <Navigation>
+          <li class="menu-item">
+            <a href="/">Home</a>
+          </li>
+          <li class="menu-item">
+            <a href="/blog/">Blog</a>
+          </li>
+          <li class="menu-item has-dropdown">
+            <button aria-haspopup="true" aria-expanded="false">Documentation</button>
+            <ul class="dropdown-menu">
+              <li class="submenu-item">
+                <a href="/docs/getting-started/">Getting Started</a>
+              </li>
+              <li class="submenu-item">
+                <a href="/docs/components/">Components</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="/contact/">Contact</a>
+          </li>
+        </Navigation>
+      </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mb-20">
+      <h2 class="text-2xl font-bold mb-4">How the Navigation Component Works</h2>
+      <div class="space-y-4">
+        <p>The updated Navigation component now supports two modes:</p>
+        
+        <ol class="list-decimal pl-6 space-y-4">
+          <li>
+            <strong>Standalone Mode:</strong> This matches the main-theme appearance and functionality when used 
+            directly or via Header with content configuration.
+          </li>
+          <li>
+            <strong>Slot Mode:</strong> This preserves compatibility with the original astro-starter pattern 
+            by accepting menu items as slot content when used within the Header component.
+          </li>
+        </ol>
+        
+        <p>This dual approach enables:</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Visual consistency with main-theme</li>
+          <li>Backward compatibility with existing astro-starter code</li>
+          <li>Content schema integration for CMS-driven navigation</li>
+          <li>Fully responsive navigation with mobile support in both modes</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</DefaultLayout>

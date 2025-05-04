@@ -1,0 +1,41 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<DefaultLayout title="Footer Component Test">
+  <main>
+    <div class="container mx-auto py-8">
+      <h1 class="text-3xl font-bold mb-4">Footer Component Test</h1>
+      <p class="mb-8">This page tests the Footer component in isolation to verify its styling and functionality.</p>
+      
+      <div class="border p-4 mb-4 bg-gray-100">
+        <h2 class="text-xl font-semibold mb-2">Component Details:</h2>
+        <ul class="list-disc pl-6">
+          <li>Migrated from React to Astro</li>
+          <li>Responsive grid layout using Tailwind CSS</li>
+          <li>Social media icons from astro-icon</li>
+          <li>Dynamic current year for copyright</li>
+          <li>Proper accessibility for social links</li>
+        </ul>
+      </div>
+      
+      <div class="p-4 mb-4 bg-gray-100">
+        <h2 class="text-xl font-semibold mb-2">Instructions:</h2>
+        <p>Scroll down to view the footer at the bottom of the page. Verify that:</p>
+        <ul class="list-disc pl-6">
+          <li>The layout matches the design from main-theme</li>
+          <li>All social icons appear correctly</li>
+          <li>The component is responsive at different screen sizes</li>
+          <li>Text is properly formatted</li>
+        </ul>
+      </div>
+      
+      <!-- Add spacer div to push footer to bottom for easier viewing -->
+      <div class="h-[50vh]"></div>
+    </div>
+  </main>
+</DefaultLayout>
+
+<!-- The footer will appear here -->
+<Footer />

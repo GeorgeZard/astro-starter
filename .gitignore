@@ -4,7 +4,7 @@ dist
 # dependencies
 node_modules/
 .snowpack/
-
+src/assets
 # logs
 npm-debug.log*
 yarn-debug.log*

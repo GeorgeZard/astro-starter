@@ -1,0 +1,143 @@
+---
+/**
+ * Icon Mapping Test Page
+ * 
+ * This page demonstrates the icon mapping system in action.
+ * It shows various lucide-react icons mapped to their MDI equivalents.
+ */
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import IconMap from '../components/IconMap.astro';
+import { Icon } from 'astro-icon/components';
+import { getIconName, iconMap, type LucideIconName } from '../utils/iconMap';
+
+// Get all available icon names for demonstration
+const iconNames = Object.keys(iconMap) as LucideIconName[];
+---
+
+<DefaultLayout title="Icon Mapping Test">
+  <section class="py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold mb-8">Icon Mapping Test</h1>
+      
+      <p class="mb-8">
+        This page demonstrates the icon mapping system that translates lucide-react icon names
+        (used in main-theme) to MDI icons (used in astro-starter via astro-icon).
+      </p>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Basic Usage</h2>
+      <div class="bg-slate-100 p-6 rounded-lg mb-12">
+        <div class="flex flex-wrap gap-8 items-center">
+          <div class="flex items-center space-x-2">
+            <IconMap icon="ArrowRight" class="w-6 h-6 text-blue-600" />
+            <span>ArrowRight</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <IconMap icon="Facebook" class="w-6 h-6 text-blue-800" />
+            <span>Facebook</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <IconMap icon="MapPin" class="w-6 h-6 text-red-600" />
+            <span>MapPin</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Sizing Example</h2>
+      <div class="bg-slate-100 p-6 rounded-lg mb-12">
+        <div class="flex flex-wrap gap-8 items-center">
+          <div class="flex flex-col items-center">
+            <IconMap icon="Heart" size={16} class="text-red-600" />
+            <span class="text-xs mt-1">size=16</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <IconMap icon="Heart" size={24} class="text-red-600" />
+            <span class="text-xs mt-1">size=24</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <IconMap icon="Heart" size={32} class="text-red-600" />
+            <span class="text-xs mt-1">size=32</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <IconMap icon="Heart" size={48} class="text-red-600" />
+            <span class="text-xs mt-1">size=48</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Accessibility Examples</h2>
+      <div class="bg-slate-100 p-6 rounded-lg mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-bold mb-4">Standalone icon with aria-label</h3>
+            <button class="bg-blue-600 text-white p-3 rounded-full">
+              <IconMap icon="ArrowRight" class="w-6 h-6" ariaLabel="Next page" />
+            </button>
+            <pre class="bg-slate-200 p-2 mt-4 rounded text-sm">
+              {`<IconMap 
+  icon="ArrowRight" 
+  class="w-6 h-6" 
+  ariaLabel="Next page" 
+/>`}
+            </pre>
+          </div>
+          <div>
+            <h3 class="font-bold mb-4">Decorative icon with aria-hidden</h3>
+            <div class="flex items-center space-x-2">
+              <IconMap icon="Calendar" class="w-6 h-6 text-blue-600" ariaHidden={true} />
+              <span>Event Date: May 2, 2025</span>
+            </div>
+            <pre class="bg-slate-200 p-2 mt-4 rounded text-sm">
+              {`<IconMap 
+  icon="Calendar" 
+  class="w-6 h-6 text-blue-600" 
+  ariaHidden={true} 
+/>`}
+            </pre>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Complete Icon Mapping Reference</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 mb-12">
+          <thead>
+            <tr>
+              <th class="py-3 px-4 border-b text-left">Lucide Icon Name</th>
+              <th class="py-3 px-4 border-b text-left">MDI Icon Name</th>
+              <th class="py-3 px-4 border-b text-left">Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            {iconNames.map(iconName => (
+              <tr class="hover:bg-gray-50">
+                <td class="py-3 px-4 border-b font-mono">{iconName}</td>
+                <td class="py-3 px-4 border-b font-mono">{getIconName(iconName)}</td>
+                <td class="py-3 px-4 border-b">
+                  <div class="flex items-center gap-4">
+                    <IconMap icon={iconName} class="w-6 h-6 text-gray-700" />
+                    <code>→</code>
+                    <Icon name={getIconName(iconName)} class="w-6 h-6 text-gray-700" />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4">Implementation Details</h2>
+      <div class="space-y-4 mb-12">
+        <p>
+          This icon mapping system consists of:
+        </p>
+        <ol class="list-decimal ml-6 space-y-2">
+          <li><code>IconMap.astro</code> - A component that handles the mapping and rendering</li>
+          <li><code>iconMap.ts</code> - A utility with the mapping dictionary and helper functions</li>
+        </ol>
+        <p>
+          For more information, see the <a href="#" class="text-blue-600 underline">IconMap.README.md</a> documentation.
+        </p>
+      </div>
+    </div>
+  </section>
+</DefaultLayout>

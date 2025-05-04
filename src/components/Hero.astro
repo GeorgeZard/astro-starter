@@ -1,44 +1,154 @@
 ---
-import { Icon } from 'astro-icon/components'
+// Properties to customize the hero component
+// This component adapts to the content schema defined in content.config.mjs
+interface Props {
+  /**
+   * The hero data from content schema
+   */
+  hero?: {
+    title?: string;
+    intro?: string;
+    media?: {
+      thumbnail?: string;
+      background_image?: string;
+      image_opacity?: string;
+    };
+    style?: {
+      surface?: string;
+      class?: string;
+      container?: string;
+    };
+    buttons?: Array<{
+      href: string;
+      label: string;
+      color?: string;
+      icon?: string;
+      icon_only?: boolean;
+    }>;
+  };
+  
+  /**
+   * For backward compatibility and direct usage
+   * Optional custom heading for the hero section
+   */
+  heading?: string;
+  /**
+   * Optional custom subheading/small text above main heading
+   */
+  subheading?: string;
+  /**
+   * Optional custom description text
+   */
+  description?: string;
+  /**
+   * Optional tagline text (smaller text below the description)
+   */
+  tagline?: string;
+  /**
+   * Optional image URL for the hero section
+   */
+  imageUrl?: string;
+  /**
+   * Optional image alt text
+   */
+  imageAlt?: string;
+  /**
+   * Optional testimonial quote text
+   */
+  testimonialQuote?: string;
+  /**
+   * Optional testimonial source
+   */
+  testimonialSource?: string;
+}
 
-const { src = '/astronaut-hero-img.webp' } = Astro.props
+// Default values
+const defaultImageUrl = "https://images.unsplash.com/photo-1621275471769-e6aa344546d5?ixlib=rb-4.0.3";
+const defaultImageAlt = "Hero image";
+
+// Destructure props with defaults, prioritizing content schema properties
+const { hero } = Astro.props;
+
+// Use content schema values if available, or fallback to direct props
+const heading = hero?.title || Astro.props.heading || "BAY<span class='font-normal'>AMO</span>";
+const subheading = Astro.props.subheading || "SEASIDE EXPERIENCE";
+const description = hero?.intro || Astro.props.description || "Curated beachside experiences in Gythio, Mani. Premium cocktails and unforgettable moments by the Mediterranean.";
+const tagline = Astro.props.tagline || "established 2015";
+const imageUrl = hero?.media?.thumbnail || hero?.media?.background_image || Astro.props.imageUrl || defaultImageUrl;
+const imageAlt = Astro.props.imageAlt || defaultImageAlt;
+const testimonialQuote = Astro.props.testimonialQuote || "The most aesthetically pleasing beach bar on the coast";
+const testimonialSource = Astro.props.testimonialSource || "Mani Travel Magazine";
+
+// Determine if we should show the testimonial
+const showTestimonial = testimonialQuote && testimonialSource;
+
+// Get style classes
+const surfaceClass = hero?.style?.surface ? `bg-${hero.style.surface}` : "bg-[#f5f3ee]";
+const containerClass = hero?.style?.container ? `max-w-${hero.style.container}` : "max-w-7xl";
+const customClass = hero?.style?.class || "";
 ---
 
-<section class="hero my-24">
-  <div class="container">
-    <div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2">
-      <div class="flex flex-col items-center gap-8 md:items-start">
-        <h1 class="text-center text-6xl md:text-left lg:text-8xl">
-          <slot><span class="text-gradient">Accessible</span> Starter for Astro</slot>
+<section id="home" class={`pt-32 pb-20 w-full ${surfaceClass} ${customClass}`}>
+  <div class={`${containerClass} mx-auto px-6 lg:px-12`}>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Left Column - Typography -->
+      <div class="lg:col-span-6 flex flex-col justify-center">
+        <h5 class="text-sm tracking-widest text-gray-500 mb-6">
+          {subheading}
+        </h5>
+        <h1 class="text-6xl md:text-8xl font-light text-gray-900 leading-none mb-8" set:html={heading}>
         </h1>
-        <div class="flex flex-col gap-3 min-[500px]:flex-row">
-          <a class="button has-icon" href="https://github.com/incluud/accessible-astro-starter">
-            <Icon name="ion:star-outline" />
-            Star on GitHub
-          </a>
-          <a class="button has-icon color-secondary" href="https://accessible-astro.incluud.dev/">
-            <Icon name="ion:bookmark-outline" />
-            Read the Docs
-          </a>
+        <div class="w-24 h-1 bg-blue-900 mb-8"></div>
+        <p class="text-xl text-gray-600 mb-8 max-w-md">
+          {description}
+        </p>
+        <div class="italic text-gray-500 text-sm">{tagline}</div>
+      </div>
+      
+      <!-- Right Column - Image -->
+      <div class="lg:col-span-6">
+        <div class="relative">
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            class="w-full h-[500px] md:h-[600px] object-cover"
+            style={hero?.media?.image_opacity ? `opacity: ${hero.media.image_opacity}` : ''}
+          />
+          {showTestimonial && (
+            <div class="absolute bottom-0 right-0 bg-white p-6 max-w-xs">
+              <p class="text-sm text-gray-700">
+                "{testimonialQuote}"
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                — {testimonialSource}
+              </p>
+            </div>
+          )}
         </div>
       </div>
-      <img class="hidden lg:block" src={src} alt="" decoding="async" />
     </div>
+    
+    {/* Render buttons if available in content schema */}
+    {hero?.buttons && hero.buttons.length > 0 && (
+      <div class="mt-8 flex flex-wrap gap-4">
+        {hero.buttons.map((button) => (
+          <a
+            href={button.href}
+            class={`inline-flex items-center px-6 py-3 rounded ${
+              button.color === 'primary' ? 'bg-blue-900 text-white' :
+              button.color === 'secondary' ? 'bg-gray-200 text-gray-800' :
+              'bg-white text-gray-800 border border-gray-300'
+            }`}
+          >
+            {button.icon && (
+              <span class="mr-2">
+                <img src={`/icons/${button.icon}.svg`} alt="" width="20" height="20" />
+              </span>
+            )}
+            {button.label}
+          </a>
+        ))}
+      </div>
+    )}
   </div>
 </section>
-
-<style lang="scss">
-  .text-gradient {
-    background: linear-gradient(315deg, var(--primary-200) 25%, var(--secondary-500));
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  :global(.darkmode .text-gradient) {
-    background: linear-gradient(315deg, var(--primary-200) 25%, var(--secondary-400));
-    background-clip: border-box;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-</style>

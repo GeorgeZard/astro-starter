@@ -1,18 +1,44 @@
 ---
-import CallToAction from './CallToAction.astro'
+/**
+ * Footer component that displays company name, tagline, social media icons, and copyright information.
+ * Converted from React to Astro component.
+ */
 
-const currentYear = new Date().getFullYear()
+const currentYear = new Date().getFullYear();
+
+// Import social icons from lucide (same as the React component)
+import { Icon } from 'astro-icon/components';
 ---
 
-<footer>
-  <CallToAction />
-  <section class="py-8">
-    <div class="container">
-      <p>
-        &copy; {currentYear} - Starter Theme for <a href="https://astro.build/">Astro</a>. Made with ❤️ by <a
-          href="https://github.com/markteekman">Mark Teekman</a
-        >.
-      </p>
+<footer class="bg-gray-900 text-white py-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <div class="md:col-span-4">
+        <h3 class="text-2xl font-light tracking-widest">BAYAMO</h3>
+        <p class="mt-2 text-gray-400 text-sm">
+          Creating unforgettable summer experiences
+        </p>
+      </div>
+      <div class="md:col-span-4 md:text-center">
+        <div class="flex space-x-6 md:justify-center">
+          <a href="#" class="hover:text-blue-200 transition-colors" aria-label="Facebook">
+            <Icon name="mdi:facebook" class="w-5 h-5" />
+          </a>
+          <a href="#" class="hover:text-blue-200 transition-colors" aria-label="Instagram">
+            <Icon name="mdi:instagram" class="w-5 h-5" />
+          </a>
+          <a href="#" class="hover:text-blue-200 transition-colors" aria-label="Twitter">
+            <Icon name="mdi:twitter" class="w-5 h-5" />
+          </a>
+        </div>
+      </div>
+      <div class="md:col-span-4 md:text-right">
+        <p class="text-sm text-gray-400">
+          &copy; {currentYear} Bayamo Beach Bar.
+          <br />
+          All rights reserved.
+        </p>
+      </div>
     </div>
-  </section>
+  </div>
 </footer>

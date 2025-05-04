@@ -104,7 +104,7 @@ export default function BlogPost({ post }: BlogPostProps) {
                   <a 
                     key={index} 
                     href={`/blog/tag/${tag.toLowerCase()}`} 
-                    className="inline-block bg-[#f5f3ee] px-4 py-2 text-sm text-gray-700 mr-2 mb-2"
+                    className="inline-block bg-[#f5f3ee] px-4 py-2 text-sm text-gray-700 mr-2"
                   >
                     {tag}
                   </a>

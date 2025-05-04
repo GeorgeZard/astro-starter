@@ -1,0 +1,109 @@
+---
+// Import our IconMap component instead of lucide-react
+import IconMap from './IconMap.astro';
+
+// Define props interface for customization
+interface Props {
+  subtitle?: string;
+  title?: string;
+  location?: {
+    label: string;
+    value: string;
+  };
+  phone?: {
+    label: string;
+    value: string;
+  };
+  email?: {
+    label: string;
+    value: string;
+  };
+  openingHours?: string;
+  mapPlaceholder?: string;
+}
+
+// Default props for the component
+const {
+  subtitle = "CONTACT",
+  title = "VISIT\nBAYAMO",
+  location = {
+    label: "Location",
+    value: "Gythio, Mani (Lakonia), Greece"
+  },
+  phone = {
+    label: "Phone",
+    value: "+30 123 456 7890"
+  },
+  email = {
+    label: "Email",
+    value: "info@bayamobeachbar.com"
+  },
+  openingHours = "Monday - Sunday: 10:00 AM - 2:00 AM",
+  mapPlaceholder = "Map Location"
+} = Astro.props;
+---
+
+<section id="contact" class="py-24 bg-[#f5f3ee]">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <div class="lg:col-span-5">
+        <h5 class="text-sm tracking-widest text-gray-500 mb-6">
+          {subtitle}
+        </h5>
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8">
+          {title.split('\n').map((line) => (
+            <>
+              {line}<br />
+            </>
+          ))}
+        </h2>
+        <div class="w-24 h-1 bg-blue-900 mb-8"></div>
+        <div class="space-y-6 mb-12">
+          <div class="flex items-start">
+            <IconMap icon="MapPin" class="w-6 h-6 text-blue-900 mr-4 mt-1" ariaHidden={true} />
+            <div>
+              <p class="text-lg font-medium text-gray-900 mb-1">
+                {location.label}
+              </p>
+              <p class="text-gray-700">
+                {location.value}
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <IconMap icon="Phone" class="w-6 h-6 text-blue-900 mr-4 mt-1" ariaHidden={true} />
+            <div>
+              <p class="text-lg font-medium text-gray-900 mb-1">
+                {phone.label}
+              </p>
+              <p class="text-gray-700">{phone.value}</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <IconMap icon="Mail" class="w-6 h-6 text-blue-900 mr-4 mt-1" ariaHidden={true} />
+            <div>
+              <p class="text-lg font-medium text-gray-900 mb-1">
+                {email.label}
+              </p>
+              <p class="text-gray-700">{email.value}</p>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-300 pt-6">
+          <p class="text-sm text-gray-500">
+            OPENING HOURS
+            <br />
+            {openingHours}
+          </p>
+        </div>
+      </div>
+      <div class="lg:col-span-7">
+        <div class="bg-white h-full">
+          <div class="w-full h-[500px] bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-600">{mapPlaceholder}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

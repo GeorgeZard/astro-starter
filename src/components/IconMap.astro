@@ -1,0 +1,69 @@
+---
+/**
+ * IconMap Component
+ * 
+ * A component that maps lucide-react icon names to MDI icons and renders them using astro-icon.
+ * This component is designed to support migration from main-theme to astro-starter.
+ * 
+ * @component
+ */
+
+import { Icon } from 'astro-icon/components';
+import { getIconName, type LucideIconName } from '../utils/iconMap';
+
+interface Props {
+  /**
+   * The lucide-react icon name (without the "Icon" suffix)
+   * Example: "ArrowRight", "Facebook", "MapPin"
+   */
+  icon: LucideIconName;
+  
+  /**
+   * CSS classes to apply to the icon
+   */
+  class?: string;
+  
+  /**
+   * Size in pixels (automatically converts to width/height classes)
+   */
+  size?: number;
+  
+  /**
+   * ARIA label for accessibility (use when icon is standalone)
+   */
+  ariaLabel?: string;
+  
+  /**
+   * Set to true if the icon is purely decorative
+   */
+  ariaHidden?: boolean;
+}
+
+const { 
+  icon, 
+  class: className = '', 
+  size,
+  ariaLabel,
+  ariaHidden
+} = Astro.props;
+
+// Get the equivalent MDI icon name
+const mdiIconName = getIconName(icon);
+
+// Determine classes based on props
+let sizeClasses = '';
+if (size) {
+  sizeClasses = `w-${size/4} h-${size/4}`; // Convert px to Tailwind size (4px units)
+}
+
+const classes = [className, sizeClasses].filter(Boolean).join(' ');
+---
+
+{/* Render the icon with appropriate attributes */}
+{ariaLabel ? (
+  <Icon name={mdiIconName} class={classes} aria-label={ariaLabel} />
+) : ariaHidden ? (
+  <Icon name={mdiIconName} class={classes} aria-hidden="true" />
+) : (
+  <Icon name={mdiIconName} class={classes} />
+)}
